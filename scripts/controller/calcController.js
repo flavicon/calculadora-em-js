@@ -114,6 +114,7 @@ class CalcController {
         if(this._operation.length < 3){
 
             let fistItem = this._operation[0];
+            
             this._operation = [fistItem, this._lastOperator, this._lastNumber];
         
         }
@@ -190,6 +191,9 @@ class CalcController {
         
         let lastOperation = this.getLastOperation();
 
+        //válida se já existe ponto.
+        if(typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) return; 
+
         if (this.isOperator(lastOperation) || !lastOperation){
 
             this.pushOperation('0.');
@@ -230,7 +234,7 @@ class CalcController {
 
                 let newValue = this.getLastOperation().toString() + value.toString();
 
-                this.setLastOperation(parseFloat(newValue));
+                this.setLastOperation(newValue);
 
                 this.setLastNumberToDisplay();
 

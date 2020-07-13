@@ -12,6 +12,7 @@ class CalcController {
         this._currentDate;
         this.initialize();
         this.initButtonsEvents();
+        this.initKeyboard();
         
     }
     
@@ -25,6 +26,53 @@ class CalcController {
             
         }, 1000);
         
+    }
+
+    initKeyboard(){
+
+        document.addEventListener('keyup', event => {
+            
+            switch (event.key) {
+
+                case 'Escape':
+                    this.clearAll();
+                    break;
+                case 'Backspace':
+                case 'Delete':
+                    this.clearEntry();
+                    break;
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                case '%':
+                    this.addOperation(event.key);
+                    break;
+                case '=':
+                case 'Enter':
+                    this.calc();
+                    break;
+                case '.':
+                case ',':
+                    this.addDot();
+                    break;
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    this.addOperation(parseInt(event.key));
+                    break;
+
+            }
+
+        });
+
     }
     
     setDisplayDateTime() {
@@ -60,6 +108,8 @@ class CalcController {
     clearEntry() {
 
         this._operation.pop();
+
+        this._operation.push(0);
 
         this.setLastNumberToDisplay();
 

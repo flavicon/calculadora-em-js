@@ -50,7 +50,7 @@ class CalcController {
 
         this._lastNumber = '';
 
-        this._operation = '';
+        this._lastOperator = '';
 
         this.setLastNumberToDisplay();
 
@@ -88,7 +88,7 @@ class CalcController {
     }
 
     pushOperation(value) {
-
+       
         this._operation.push(value);
 
         if (this._operation.length > 3) {
@@ -121,7 +121,7 @@ class CalcController {
 
         if(this._operation.length > 3){
             
-            let last = this._operation.pop();
+            last = this._operation.pop();
 
             this._lastNumber = this.getResult();
 
@@ -167,7 +167,7 @@ class CalcController {
 
         }
 
-        if (!lastItem) {
+        if (!lastItem && lastItem != 0) {
 
             lastItem = (isOperator) ? this._lastOperator:this._lastNumber;
         
@@ -181,6 +181,9 @@ class CalcController {
 
         let lastNumber = this.getLastItem(false);
 
+        console.log('Array', this._operation);
+        console.log('Ultimo numero', lastNumber);
+
         if(!lastNumber) lastNumber = 0;
 
         this.displayCalc = lastNumber;
@@ -192,9 +195,13 @@ class CalcController {
         let lastOperation = this.getLastOperation();
 
         //válida se já existe ponto.
-        if(typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) return; 
+        if(typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) {
+            
+            return;
 
-        if (this.isOperator(lastOperation) || !lastOperation){
+        } 
+        
+        if (this.isOperator(lastOperation) || !lastOperation && !(lastOperation === 0)){
 
             this.pushOperation('0.');
 
@@ -216,31 +223,42 @@ class CalcController {
 
                 this.setLastOperation(value);
 
-            } else {
+            } else {      
 
                 this.pushOperation(value);
-
+                
                 this.setLastNumberToDisplay();
-
+                
             }
-
+            
         } else {
-
+            
             if (this.isOperator(value)) {
-
+                
                 this.pushOperation(value);
-
+                
             } else {
 
-                let newValue = this.getLastOperation().toString() + value.toString();
+                if (this.getLastOperation() === 0 || this.getLastOperation() === '0') {
+                    
+                    this._operation[this._operation.length - 1] = value;
 
-                this.setLastOperation(newValue);
+                    this.setLastNumberToDisplay();
 
-                this.setLastNumberToDisplay();
+                } else {
+
+                    let newValue = this.getLastOperation().toString() + value.toString();
+        
+                    this.setLastOperation(newValue);
+        
+                    this.setLastNumberToDisplay();
+
+                }
+
 
             }
-        }
 
+        }
 
     }
 

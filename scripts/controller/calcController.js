@@ -60,7 +60,7 @@ class CalcController {
 
     }
 
-    copyToClipboard() {
+    copyToClipboard(){
 
         let input = document.createElement('input');
 
@@ -301,9 +301,9 @@ class CalcController {
 
             lastNumber = 0
 
-        } else if ((lastNumber.toString().split('').indexOf('.') > -1) && lastNumber.toString().split('').length > 3) {
+        } else if ((lastNumber.toString().split('').indexOf('.') > -1) && lastNumber.toString().length > 8) {
 
-            lastNumber = lastNumber.toFixed(3);
+            lastNumber = lastNumber.toFixed(8).replace('0', '');
 
         }
 
@@ -491,6 +491,15 @@ class CalcController {
     }
 
     set displayCalc(value) {
+
+        if(value.toString().length > 10){
+
+            this.setError();
+
+            return false;
+
+        }
+
         this._displayCalcEl.innerHTML = value;
     }
 

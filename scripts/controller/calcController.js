@@ -268,7 +268,15 @@ class CalcController {
         console.log('Array', this._operation);
         console.log('Ultimo numero', lastNumber);
 
-        if(!lastNumber) lastNumber = 0;
+        if(!lastNumber) {
+
+            lastNumber = 0
+            
+        } else if((lastNumber.toString().split('').indexOf('.') > -1) && lastNumber.toString().split('').length > 3){
+
+            lastNumber = lastNumber.toFixed(2);
+            
+        }
 
         this.displayCalc = lastNumber;
 
